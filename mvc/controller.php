@@ -152,7 +152,9 @@
     
             // width,height指定
             $keyScore = 400;
-    
+            
+            // var_dump($fileData);
+
             // 加工するファイル指定
             $file = $fileData["tmp_name"];
             // 加工前の画像の情報を取得
@@ -161,9 +163,13 @@
             // 縦長or横長の判定
             if($original_w > $original_h){
                 $longLength = $original_w;
+            }else if($original_w == $original_h){
+                $longLength = $original_w;
             }else{
                 $longLength = $original_h;
             }
+
+            // var_dump($longLength);
             
             // 基準値を超えている場合
             if($longLength > $keyScore){
@@ -190,6 +196,8 @@
                 default:
                     throw new RuntimeException('対応していないファイル形式です。: ', $type);
             }
+
+            // var_dump($original_image);
     
             // 新しく描画するキャンバスを作成
             $canvas = imagecreatetruecolor($w, $h);
