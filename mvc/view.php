@@ -10,10 +10,10 @@
                 <div>
                     <div class="header">
                         <div class="logoarea">
-                            <img src="img/logo.png" class="logo">
+                            <a href=""><img src="img/logo.png" class="logo"></a>
                         </div>
                         <div class="sitename">
-                            <p>ポートフォリオサイト</p>
+                            <p>ポートフォリオ</p>
                         </div>
                         <div class="registerarea">
                             <a href="" class="registerBtn">サイト登録</a>
@@ -91,6 +91,7 @@
                 </div>
             ';
             echo $view;
+            exit();
         }
 
         // プロフィール登録画面
