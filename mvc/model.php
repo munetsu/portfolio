@@ -218,6 +218,46 @@
             }        
         }
 
+        // キーワード検索からのサイト情報
+        public function searchwordSiteinfo($array){
+            
+            // $count = 1;
+            // foreach($array as $recode){
+            //     if($count == 1){
+            //         $where = 'SELECT siteinfos.title, siteinfos.url, siteinfos.image, siteKeywords.keyword FROM `siteinfos` INNER JOIN `siteKeywords` ON siteinfos.siteinfo_id = siteKeywords.siteinfo_id WHERE siteinfos.siteinfo_id = '."'".$recode."'";
+            //     }else{
+            //         $where .= 'OR '."'".$recode."'";
+            //     }
+            //     $count++;
+            // }
+            
+            // $res = $this->data->selectInnerJoin($where);
+            $table = 'siteinfos';
+            $column = '*';
+            $count = 1;
+            foreach($array as $recode){
+                if($count == 1){
+                    $where = 'WHERE `siteinfo_id` ='."'".$recode."'";
+                }else{
+                    $where .= 'OR `siteinfo_id` ='."'".$recode."'";
+                }
+                $count++;
+            }
+            $res = $this->data->selectAll($column, $table, $where);
+            
+
+            //キーワード追記
+            $table = 'siteKeywords';
+            $column = '`side`, `keyword`';
+            for($i = 0;$i<count($res);$i++){
+                $where = 'WHERE `siteinfo_id` ='."'".$res[$i]['siteinfo_id']."'";
+                $result = $this->data->selectAll($column, $table, $where);
+                $res[$i]['keyword'][$i] = $result;
+            }
+           
+            return $res;
+        }
+
         /////////////////////////////////////////////////
         // UPDATE部分
         /////////////////////////////////////////////////

@@ -360,6 +360,7 @@ $(document).on('click', '.serachbtn', function(){
         alert('3単語まで検索可能です');
         return;
     }
+    console.log(searchwords);
     
     // ajax処理
     $.ajax({
@@ -371,7 +372,8 @@ $(document).on('click', '.serachbtn', function(){
         }
     })
     .done((data)=>{
-        console.log('成功'+data)
+        $('.lists').html(data);
+        console.log(data);
     })
     .fail((data)=>{
         console.log('失敗'+data);

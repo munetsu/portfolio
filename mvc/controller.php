@@ -162,8 +162,24 @@
                 // 検索ワード
                 $words = $_POST['words'];
                 
+                // サイトID取得
                 $res = $this->model->searchwords($words);
                 
+                // サイト情報取得
+                $ids = array();
+                foreach($res as $data){
+                    if($data == NULL){
+                        continue;
+                    }else{
+                        array_push($ids, $data);
+                    }
+                }
+                
+                $res = $this->model->searchwordSiteinfo($ids);
+                
+                // VIEWへ
+                $view = $this->view->viewSearch($res);
+                echo $view;
             }
         }
         
