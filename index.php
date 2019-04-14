@@ -46,6 +46,7 @@
                 $where = 'WHERE `siteinfo_id` ='."'".$site['siteinfo_id']."'";
                 $keywords = $model->anySelectAll($column, $table, $where);
                 $siteInfo[$count]['keyword'] = $keywords;
+                $count++;
             }
         }
         $siteInfo = json($siteInfo);

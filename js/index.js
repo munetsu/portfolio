@@ -37,7 +37,7 @@ function siteFlontWords(siteInfo, i){
     let view = '';
     for(let k=0;k<siteInfo[i]['keyword'].length;k++){
         if(siteInfo[i]['keyword'][k]['side'] == 'flont'){
-            view += '<div class="flontend">'+siteInfo[i]['keyword'][k]['keyword']+'</div>';
+            view += '<div class="flontendword">'+siteInfo[i]['keyword'][k]['keyword']+'</div>';
         }
     }
     return view;
@@ -47,7 +47,7 @@ function siteServerWords(siteInfo, i){
     let view = '';
     for(let k=0;k<siteInfo[i]['keyword'].length;k++){
         if(siteInfo[i]['keyword'][k]['side'] == 'server'){
-            view += '<div class="serverside">'+siteInfo[i]['keyword'][k]['keyword']+'</div>';
+            view += '<div class="serversideword">'+siteInfo[i]['keyword'][k]['keyword']+'</div>';
         }
     }
     return view;
