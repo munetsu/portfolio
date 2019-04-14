@@ -156,6 +156,15 @@
                     exit();
                 }
             }
+
+            // サイト検索
+            if($this->POST == 'searchWords'){
+                // 検索ワード
+                $words = $_POST['words'];
+                
+                $res = $this->model->searchwords($words);
+                
+            }
         }
         
 

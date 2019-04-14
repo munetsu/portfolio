@@ -320,6 +320,64 @@ $(document).on('click', '.uploadBtn', function(e){
     photoUp.submit();
 })
 
+// 検索ボタンを押した時
+$(document).on('click', '.serachbtn', function(){
+    let words = $('input[name=search]').val();
+    // 文字を検索していなかった場合
+    if(words == ''){
+        window.location.reload();
+        return;
+    }
+    let searchwords = [];
+    
+    // 一文字ずつ分割
+    let oneword = words.split('');
+    let word = '';
+    // 文字数
+    let stringcount = oneword.length; 
+    // 文字を繋ぐ
+    for(let i=0;i<oneword.length;i++){
+        if(oneword[i] == ' ' || oneword[i] == '、' || oneword[i] == '　'){
+            searchwords.push(word);
+            word = '';
+        }else if(i == (stringcount-1)){
+            console.log(i+','+stringcount);
+            word = word+oneword[i];
+            searchwords.push(word);
+        }else{
+            word = word+oneword[i];
+        }
+    }
+    // 念のため、再度配列内を確認
+    searchwords.forEach((item, index)=>{
+        if(item ==  ' ' || item == '、' || item == '　' || item == ''){
+            searchwords.splice(index, 1);
+        }
+    })
+
+    // 3ワードまで
+    if(searchwords.length >= 4){
+        alert('3単語まで検索可能です');
+        return;
+    }
+    
+    // ajax処理
+    $.ajax({
+        url:'mvc/controller.php',
+        type:'POST',
+        data:{
+            action:'searchWords',
+            words:searchwords
+        }
+    })
+    .done((data)=>{
+        console.log('成功'+data)
+    })
+    .fail((data)=>{
+        console.log('失敗'+data);
+    })
+})
+
 
 
 
@@ -397,7 +455,7 @@ function viewChangePhoto(){
 function viewSitelist(){
     let view = `
         <div class="searcharea">
-            <input type="text" name="search" placeholder="キーワード検索"><i class="fas fa-search serachbtn"></i>
+            <input type="text" name="search" placeholder="AND検索／複数ワードは半角スペース／3単語まで"><i class="fas fa-search serachbtn"></i>
         </div>
         <div class="lists">
         </div>    
