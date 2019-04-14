@@ -165,4 +165,50 @@
             return $view;
         }
 
+        // 検索ワード反映後のサイト一覧
+        public function viewSearch($array){
+            $view = '';
+            foreach($array as $data){
+                $view .= '
+                <div class="card">
+                    <p class="sitetitle"><a href="'.$data['url'].'" target="_blank">'.$data['title'].'</a></p>
+                    <img src="upload/'.$data['image'].'" class="siteImg">
+                    <div class="sitekeyword">
+                        <table>
+                        <tr>
+                            <td>フロントエンド</td>
+                            <td class="flontend">
+                            ';
+                            foreach($data['keyword'] as $keyword){
+                                foreach($keyword as $word){
+                                    if($word['side'] == 'flont'){
+                                        $view .= '<div class="flontendword">'.$word['keyword'].'</div>';
+                                    }
+                                }
+                            }
+                            $view .= '
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>サーバサイド</td>
+                            <td class="serverside">
+                            ';
+                            foreach($data['keyword'] as $keyword){
+                                foreach($keyword as $word){
+                                    if($word['side'] == 'server'){
+                                        $view .= '<div class="serversideword">'.$word['keyword'].'</div>';
+                                    }
+                                }
+                            }
+                            $view .= '
+                            </td>
+                        </tr>
+                        </table>
+                    </div>
+                </div>
+            ';        
+            }
+            return $view;
+        }
+
     }

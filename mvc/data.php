@@ -88,6 +88,20 @@
             }
         }
 
+        // select(INNER JOIN)
+        public function selectInnerJoin($sql){
+            $sql = $sql;
+            $stmt = $this->pdo->prepare($sql);
+            $res = $stmt->execute();
+            if($res === false){
+                $this->queryError($stmt);
+            }else {
+                $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                return $res;
+            }
+
+        }
+
         //////////////////////////////////////////////
         // UPDATE
         //////////////////////////////////////////////
