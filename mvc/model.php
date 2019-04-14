@@ -74,7 +74,7 @@
             $table = 'siteKeywords';
             // フロント
             if(count($flont) == 1){
-                $keyword = h($flont);
+                $keyword = h($flont[0]);
                 $values = "('".$id."'".","."'flont' , "."'".$keyword."')";
                 $res = $this->data->insertMulti($table, $values);
             }else{
@@ -97,7 +97,7 @@
 
             // サーバサイド
             if(count($server) == 1){
-                $keyword = h($server);
+                $keyword = h($server[0]);
                 $values = "('".$id."'".","."'server' , "."'".$keyword."')";
                 $res = $this->data->insertMulti($table, $values);
             }else{

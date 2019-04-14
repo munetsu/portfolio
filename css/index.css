@@ -256,6 +256,10 @@ select{
     height: 30px;
 }
 
+table{
+    margin-top: 5vh;
+}
+
 tr {
     height: 8vh;
     margin-bottom: 3vh;
@@ -319,4 +323,14 @@ tr {
 
 input[name=search] {
     margin-right: 20px;
+}
+
+.flontendword {
+    margin-left: 10px;
+    background-color: #a5e4b1;
+}
+
+.serversideword {
+    margin-left: 10px;
+    background-color: #e5a9d9;
 }
