@@ -69,6 +69,57 @@
 
         }
 
+        // サイトキーワード処理
+        public function siteKeyword($id, $flont, $server){
+            $table = 'siteKeywords';
+            // フロント
+            if(count($flont) == 1){
+                $keyword = h($flont);
+                $values = "('".$id."'".","."'flont' , "."'".$keyword."')";
+                $res = $this->data->insertMulti($table, $values);
+            }else{
+                $count = 1;
+                foreach($flont as $keyword){
+                        $keyword = h($keyword);
+                    if($count == 1){
+                        $values = $values = "('".$id."'".","."'flont' , "."'".$keyword."')";
+                    }else{
+                        $values .= ", ('".$id."'".","."'flont' , "."'".$keyword."')";
+                    }
+                    $count++;
+                }
+                $res = $this->data->insertMulti($table, $values);
+            }
+            if(!$res){
+                echo 'NG';
+                exit();
+            }
+
+            // サーバサイド
+            if(count($server) == 1){
+                $keyword = h($server);
+                $values = "('".$id."'".","."'server' , "."'".$keyword."')";
+                $res = $this->data->insertMulti($table, $values);
+            }else{
+                $count = 1;
+                foreach($server as $keyword){
+                    $keyword = h($keyword);
+                    if($count == 1){
+                        $values = $values = "('".$id."'".","."'server' , "."'".$keyword."')";
+                    }else{
+                        $values .= ", ('".$id."'".","."'server' , "."'".$keyword."')";
+                    }
+                    $count++;
+                }
+                $res = $this->data->insertMulti($table, $values);
+            }
+            if(!$res){
+                echo 'NG';
+                exit();
+            }
+
+        }
+
         /////////////////////////////////////////////////
         // SELECT部分
         /////////////////////////////////////////////////

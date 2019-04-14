@@ -83,6 +83,37 @@
             return $view;
         }
 
+        // サイトキーワード登録
+        public function viewKeywords($id){
+            $view = '
+                <div class="siteregisterarea">
+                    <p>【利用技術】</p>
+                    <select>
+                        <option value="flont">フロントエンド</option>
+                        <option value="server">サーバサイド</option>
+                    </select>
+                    <input type="text" name="keyword" placeholder="利用技術を記載ください">
+                    <button class="setword">追加</button>
+                    <div class="inputarea">
+                        <table>
+                            <tr>
+                                <td>フロントエンド</td>
+                                <td class="flontend"></td>
+                            </tr>
+                            <tr>
+                                <td>サーバサイド</td>
+                                <td class="serverside"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="btnarea">
+                        <a href="" class="keywordBtn" data-id='.$id.'>キーワード登録</a>
+                    </div>
+                </div>
+            ';
+            return $view;
+        }
+
         // error画面
         public function errorview(){
             $view = '

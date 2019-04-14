@@ -6,17 +6,21 @@ let keyword = [];
 
 // プロフィール
 info;
-console.log(info);
+// console.log(info);
 // キーワード
 words;
-console.log(words);
+// console.log(words);
 // サイト
 siteInfo;
-console.log(siteInfo.length);
+console.log(siteInfo);
 
 // 登録状況
 step;
-console.log(step);
+// console.log(step);
+
+// 利用技術
+let flont = [];
+let server = [];
 ///////////////////////////////////////////////////// 
 // 関数一覧
 ///////////////////////////////////////////////////// 
@@ -29,13 +33,35 @@ function siteList(siteInfo){
     return view;
 }
 
+function siteFlontWords(siteInfo, i){
+    let view = '';
+    for(let k=0;k<siteInfo[i]['keyword'].length;k++){
+        if(siteInfo[i]['keyword'][k]['side'] == 'flont'){
+            view += '<div class="flontend">'+siteInfo[i]['keyword'][k]['keyword']+'</div>';
+        }
+    }
+    return view;
+}
+
+function siteServerWords(siteInfo, i){
+    let view = '';
+    for(let k=0;k<siteInfo[i]['keyword'].length;k++){
+        if(siteInfo[i]['keyword'][k]['side'] == 'server'){
+            view += '<div class="serverside">'+siteInfo[i]['keyword'][k]['keyword']+'</div>';
+        }
+    }
+    return view;
+}
+
 ///////////////////////////////////////////////////// 
 // 読み込み時処理
 /////////////////////////////////////////////////////
 if(step == 2){
     $('.profile').append(viewProfile(info));
     $('.productarea').append(viewSitelist());
-    $('.lists').append(siteList(siteInfo));
+    if(siteInfo[0] != 'サイトなし'){
+        $('.lists').append(siteList(siteInfo));
+    }
 }
 
 
@@ -210,11 +236,91 @@ $(document).on('click', '.btn', function(e){
     })
 })
 
+// キーワード登録
+$(document).on('click', '.setword', function(){
+    // 登録サイドを取得
+    let side = $('select').val();
+    // 追加ワードを取得
+    let word = $('input[name=keyword]').val();
+    // 文字が入っているか確認
+    if(word == ''){
+        alert('入力されていません');
+        return;
+    }
+    // 配列に追加
+    if(side == 'flont'){
+        flont.push(word);
+        // キーワードを描画
+        $('.flontend').append(viewFlontword(word));
+
+    }else{
+        server.push(word);
+        $('.serverside').append(viewServerword(word));
+    }
+    $('input[name=keyword]').val('');
+})
+
+// フロントキーワード削除
+$(document).on('click', '.flontdelete', function(){
+    let word = $(this).attr('data-word');
+    // 配列削除
+    flont.splice(word, 1);
+    // スペースからも削除
+    $('div[data-word='+word+']').remove();
+    console.log(flont);
+})
+
+//サーバキーワード削除
+$(document).on('click', '.serverdelete', function(){
+    let word = $(this).attr('data-word');
+    // 配列削除
+    server.splice(word, 1);
+    // スペースからも削除
+    $('div[data-word='+word+']').remove();
+    console.log(server);
+})
+
+// キーワード登録ボタン
+$(document).on('click', '.keywordBtn', function(e){
+    e.preventDefault();
+    let id = $(this).attr('data-id');
+    // データ数確認
+    if(flont.length == 0){
+        flont.push('使用技術なし');
+    }
+    if(server.length == 0){
+        server.push('使用技術なし');
+    }
+    // ajax処理
+    $.ajax({
+        url:'mvc/controller.php',
+        type:'POST',
+        data:{
+            action:'siteKeyword',
+            flont:flont,
+            server:server,
+            id:id
+        }
+    })
+    .done((data)=>{
+        if(data == 'NG'){
+            alert('データ登録時にエラーが出ました');
+            return;
+        }
+        $('.right').html(data);
+    })
+    .fail((data)=>{
+        console.log(data);
+    })
+})
+
 // 写真登録ボタンを押した時
 $(document).on('click', '.uploadBtn', function(e){
     e.preventDefault();
     photoUp.submit();
 })
+
+
 
 
 
@@ -291,8 +397,7 @@ function viewChangePhoto(){
 function viewSitelist(){
     let view = `
         <div class="searcharea">
-            キーワード検索
-            <input type="text" name="search"><i class="fas fa-search serachbtn"></i>
+            <input type="text" name="search" placeholder="キーワード検索"><i class="fas fa-search serachbtn"></i>
         </div>
         <div class="lists">
         </div>    
@@ -306,8 +411,40 @@ function viewSiteCard(siteInfo, i){
         <div class="card">
             <p class="sitetitle"><a href="`+siteInfo[i]['url']+`" target="_blank">`+siteInfo[i]['title']+`</a></p>
             <img src="upload/`+siteInfo[i]['image']+`" class="siteImg">
+            <div class="sitekeyword">
+                <table>
+                <tr>
+                    <td>フロントエンド</td>
+                    <td class="flontend">`+siteFlontWords(siteInfo, i)+`</td>
+                </tr>
+                <tr>
+                    <td>サーバサイド</td>
+                    <td class="serverside">`+siteServerWords(siteInfo, i)+`</td>
+                </tr>
+                </table>
+            </div>
         </div>
     `;
     return view;
 }
 
+
+
+// サイトキーワード部分（入力時）
+function viewFlontword(word){
+    let view = `
+        <div class="words" data-word="`+word+`">
+            <p class="word">`+word+`<span><img src="img/icon/batsu.svg" class="flontdelete" data-word="`+word+`"></span></p>
+        </div>
+    `;
+    return view;
+}
+
+function viewServerword(word){
+    let view = `
+        <div class="words" data-word="`+word+`">
+            <p class="word">`+word+`<span><img src="img/icon/batsu.svg" class="serverdelete" data-word="`+word+`"></span></p>
+        </div>
+    `;
+    return view;
+}

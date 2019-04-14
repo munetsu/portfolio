@@ -38,8 +38,20 @@
         $siteInfo = $model->anySelectAll($column, $table, $where);
         if(!$siteInfo){
             $siteInfo[] = 'サイトなし';
+        }else{
+            $table = 'siteKeywords';
+            $column = '`side`, `keyword`';
+            $count = 0;
+            foreach($siteInfo as $site){
+                $where = 'WHERE `siteinfo_id` ='."'".$site['siteinfo_id']."'";
+                $keywords = $model->anySelectAll($column, $table, $where);
+                $siteInfo[$count]['keyword'] = $keywords;
+            }
         }
         $siteInfo = json($siteInfo);
+
+        // サイトキーワード
+
 
         $views = $view->viewIndex();
         $step =2;
