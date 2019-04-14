@@ -98,10 +98,25 @@
                     $views = $this->view->viewRegisterTitle($id);
                     echo $views;
                 }else{
-                    // 写真アップロード画面へ
-                    $view = $this->view->viewRegisterPhoto($id);
+                    //キーワード登録へ
+                    $view = $this->view->viewKeywords($id);
                     echo $view;
                 }
+            }
+
+            // サイトキーワード
+            if($this->POST == 'siteKeyword'){
+                
+                $id = h($_POST['id']);
+                $flont = $_POST['flont'];
+                $server = $_POST['server'];
+                
+                // modelへ
+                $this->model->siteKeyword($id, $flont, $server);
+
+                // 写真登録へ
+                $view = $this->view->viewRegisterPhoto($id);
+                echo $view;
             }
 
             // 写真追加
