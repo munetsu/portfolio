@@ -167,6 +167,57 @@
             return $res;
         }
 
+        // 検索ワード→サイトID取得
+        public function searchwords($array){
+            $table = 'siteKeywords';
+            $column = 'siteinfo_id';
+            $count = count($array);
+
+            if($count == 1){
+                $word = h($array[0]);
+                $where = 'WHERE `keyword` ='."'".$word."'";
+                $res = $this->data->selectAll($column, $table, $where);
+                $id = array();
+                foreach($res as $recode){
+                    array_push($id, $recode['siteinfo_id']);
+                }
+                return $id;
+            }else if($count == 2){
+                $word = h($array[0]);
+                $where = 'WHERE `keyword` ='."'".$word."'";
+                $res = $this->data->selectAll($column, $table, $where);
+
+                $words = h($array[1]);
+                $ids = array();
+                foreach($res as $recode){
+                    $where = 'WHERE `keyword` ='."'".$words."'".'AND `siteinfo_id` ='."'".$recode['siteinfo_id']."'";
+                    $res = $this->data->select($column, $table, $where);
+                    array_push($ids, $res['siteinfo_id']);
+                }
+                return $ids;
+            }else{
+                $word = h($array[0]);
+                $where = 'WHERE `keyword` ='."'".$word."'";
+                $res = $this->data->selectAll($column, $table, $where);
+
+                $words = h($array[1]);
+                $ids = array();
+                foreach($res as $recode){
+                    $where = 'WHERE `keyword` ='."'".$words."'".'AND `siteinfo_id` ='."'".$recode['siteinfo_id']."'";
+                    $res = $this->data->select($column, $table, $where);
+                    array_push($ids, $res['siteinfo_id']);
+                }
+                $word2 = h($array[2]);
+                $idarray = array();
+                foreach($ids as $id){
+                    $where = 'WHERE `keyword` ='."'".$word2."'".'AND `siteinfo_id` ='."'".$id."'";
+                    $res = $this->data->select($column, $table, $where);
+                    array_push($idarray, $res['siteinfo_id']);
+                }
+                return $idarray;
+            }        
+        }
+
         /////////////////////////////////////////////////
         // UPDATE部分
         /////////////////////////////////////////////////

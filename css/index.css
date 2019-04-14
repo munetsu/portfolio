@@ -166,6 +166,7 @@ input[name="keyword"]{
 .right {
     width: 70vw;
     padding-left: 20px;
+    overflow: scroll;
 }
 
 /************************************************ 
